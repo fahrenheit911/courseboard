@@ -16,6 +16,14 @@ Web application for managing courses and students, built with React, TypeScript,
 npm install
 ```
 
+## Environment variables
+
+Create `.env` file in the project root based on `.env.example`:
+
+```bash
+cp .env.example .env
+```
+
 ## Development
 
 Start the dev server:
@@ -55,6 +63,34 @@ src/
 
 - **Courses** (`/courses`) — manage courses
 - **Students** (`/students`) — student list
+
+## Database Schema
+
+The database consists of three tables:
+
+### `students`
+- `id` (uuid, primary key) — unique identifier
+- `first_name` (text) — student's first name
+- `last_name` (text) — student's last name
+- `age` (integer) — age (must be greater than 0)
+- `created_at` (timestamp) — creation date
+
+### `courses`
+- `id` (uuid, primary key) — unique identifier
+- `title` (text, unique) — course title
+- `start_time` (time) — start time
+- `description` (text) — course description
+- `duration_minutes` (integer) — duration in minutes (default: 45)
+- `created_at` (timestamp) — creation date
+
+### `course_students`
+- `id` (uuid, primary key) — unique identifier
+- `course_id` (uuid) — reference to course (cascade delete)
+- `student_id` (uuid) — reference to student (cascade delete)
+- `created_at` (timestamp) — creation date
+- Unique constraint on `(course_id, student_id)` pair
+
+All tables use Row Level Security (RLS) for access control.
 
 ## Version
 
