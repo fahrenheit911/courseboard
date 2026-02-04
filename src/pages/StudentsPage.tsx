@@ -1,46 +1,63 @@
-import { useEffect, useState } from 'react'
-import { X } from 'lucide-react'
-import { deleteStudent, getStudents, type StudentData } from '../lib/supabase'
-import ConfirmDeleteModal from '../components/ConfirmDeleteModal'
+import { useEffect, useState } from 'react';
+import { X, Plus } from 'lucide-react';
+import { deleteStudent, getStudents, type StudentData } from '../lib/supabase';
+import ConfirmDeleteModal from '../components/ConfirmDeleteModal';
+import CreateStudentModal from '../components/CreateStudentModal';
 
 function StudentsPage() {
-  const [students, setStudents] = useState<StudentData[] | null>(null)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [studentToDelete, setStudentToDelete] = useState<StudentData | null>(null)
+  const [students, setStudents] = useState<StudentData[] | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [studentToDelete, setStudentToDelete] = useState<StudentData | null>(
+    null,
+  );
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
 
   async function handleDeleteStudent(id: string): Promise<void> {
-    const isDeleted = await deleteStudent(id)
+    const isDeleted = await deleteStudent(id);
 
     if (isDeleted) {
       setStudents((prev) =>
-        prev ? prev.filter((student) => student.id !== id) : prev
-      )
+        prev ? prev.filter((student) => student.id !== id) : prev,
+      );
     }
   }
 
   async function handleConfirmDeleteStudent(): Promise<void> {
     if (!studentToDelete) {
-      return
+      return;
     }
 
-    await handleDeleteStudent(studentToDelete.id)
-    setStudentToDelete(null)
+    await handleDeleteStudent(studentToDelete.id);
+    setStudentToDelete(null);
   }
 
+  function handleCreateSuccess(newStudent: StudentData) {
+    setStudents((prev) => (prev ? [newStudent, ...prev] : [newStudent]));
+  }
 
   useEffect(() => {
     const fetchStudents = async () => {
-      setIsLoading(true)
-      const data = await getStudents()
-      setStudents(data)
-      setIsLoading(false)
-    }
+      setIsLoading(true);
+      const data = await getStudents();
+      setStudents(data);
+      setIsLoading(false);
+    };
 
-    fetchStudents()
-  }, [])
+    fetchStudents();
+  }, []);
 
   return (
     <>
+      <div className="header-actions">
+        <button
+          className="button button--primary"
+          onClick={() => setIsCreateModalOpen(true)}
+        >
+          <Plus size={18} />
+          Create Student
+        </button>
+      </div>
+
       <ul className="list">
         {students?.map((student: StudentData) => (
           <li key={student.id} className="list-item">
@@ -60,6 +77,9 @@ function StudentsPage() {
           </li>
         ))}
         {isLoading && <li className="list-item">Loading...</li>}
+        {students && students.length === 0 && !isLoading && (
+          <li className="list-item">No students found.</li>
+        )}
       </ul>
 
       <ConfirmDeleteModal
@@ -73,8 +93,14 @@ function StudentsPage() {
         onConfirm={handleConfirmDeleteStudent}
         onCancel={() => setStudentToDelete(null)}
       />
+
+      <CreateStudentModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSuccess={handleCreateSuccess}
+      />
     </>
-  )
+  );
 }
 
-export default StudentsPage
+export default StudentsPage;

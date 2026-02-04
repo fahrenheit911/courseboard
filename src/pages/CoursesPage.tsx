@@ -1,50 +1,71 @@
-import { useEffect, useState } from 'react'
-import { X } from 'lucide-react'
-import { deleteCourse, getCourses, type CourseData } from '../lib/supabase'
-import ConfirmDeleteModal from '../components/ConfirmDeleteModal'
+import { useEffect, useState } from 'react';
+import { X, Plus } from 'lucide-react';
+import { deleteCourse, getCourses, type CourseData } from '../lib/supabase';
+import ConfirmDeleteModal from '../components/ConfirmDeleteModal';
+import CreateCourseModal from '../components/CreateCourseModal';
 
 function CoursesPage() {
-  const [courses, setCourses] = useState<CourseData[] | null>(null)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [courseToDelete, setCourseToDelete] = useState<CourseData | null>(null)
+  const [courses, setCourses] = useState<CourseData[] | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [courseToDelete, setCourseToDelete] = useState<CourseData | null>(null);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
 
   async function handleDeleteCourse(id: string): Promise<void> {
-    const isDeleted = await deleteCourse(id)
+    const isDeleted = await deleteCourse(id);
 
     if (isDeleted) {
       setCourses((prev) =>
-        prev ? prev.filter((course) => course.id !== id) : prev
-      )
+        prev ? prev.filter((course) => course.id !== id) : prev,
+      );
     }
   }
 
   async function handleConfirmDeleteCourse(): Promise<void> {
     if (!courseToDelete) {
-      return
+      return;
     }
 
-    await handleDeleteCourse(courseToDelete.id)
-    setCourseToDelete(null)
+    await handleDeleteCourse(courseToDelete.id);
+    setCourseToDelete(null);
+  }
+
+  function handleCreateSuccess(newCourse: CourseData) {
+    setCourses((prev) => (prev ? [newCourse, ...prev] : [newCourse]));
   }
 
   useEffect(() => {
     const fetchCourses = async () => {
-      setIsLoading(true)
-      const data = await getCourses()
-      setCourses(data)
-      setIsLoading(false)
-    }
+      setIsLoading(true);
+      const data = await getCourses();
+      setCourses(data);
+      setIsLoading(false);
+    };
 
-    fetchCourses()
-  }, [])
+    fetchCourses();
+  }, []);
 
   return (
     <>
+      <div className="header-actions">
+        <button
+          className="button button--primary"
+          onClick={() => setIsCreateModalOpen(true)}
+        >
+          <Plus size={18} />
+          Create Course
+        </button>
+      </div>
+
       <ul className="list">
         {courses?.map((course: CourseData) => (
           <li key={course.id} className="list-item">
             <div className="list-item__content">
-              <span className="list-item__title">{course.title}</span>
+              <div className="list-item__text">
+                <span className="list-item__title">{course.title}</span>
+                <span className="list-item__subtitle">
+                  {course.start_time.slice(0, 5)}
+                </span>
+              </div>
               <button
                 type="button"
                 className="list-item__delete-button"
@@ -57,6 +78,9 @@ function CoursesPage() {
           </li>
         ))}
         {isLoading && <li className="list-item">Loading...</li>}
+        {courses && courses.length === 0 && !isLoading && (
+          <li className="list-item">No courses found.</li>
+        )}
       </ul>
 
       <ConfirmDeleteModal
@@ -70,8 +94,14 @@ function CoursesPage() {
         onConfirm={handleConfirmDeleteCourse}
         onCancel={() => setCourseToDelete(null)}
       />
+
+      <CreateCourseModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSuccess={handleCreateSuccess}
+      />
     </>
-  )
+  );
 }
 
-export default CoursesPage
+export default CoursesPage;
