@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { X, Plus } from 'lucide-react';
 import { deleteCourse, getCourses, type CourseData } from '../lib/supabase';
 import ConfirmDeleteModal from '../components/ConfirmDeleteModal';
+import CreateButton from '../components/CreateButton';
 import CreateCourseModal from '../components/CreateCourseModal';
+import DeleteButton from '../components/DeleteButton';
 
 function CoursesPage() {
   const [courses, setCourses] = useState<CourseData[] | null>(null);
@@ -47,13 +48,10 @@ function CoursesPage() {
   return (
     <>
       <div className="header-actions">
-        <button
-          className="button button--primary"
+        <CreateButton
+          label="Create Course"
           onClick={() => setIsCreateModalOpen(true)}
-        >
-          <Plus size={18} />
-          Create Course
-        </button>
+        />
       </div>
 
       <ul className="list">
@@ -66,14 +64,10 @@ function CoursesPage() {
                   {course.start_time.slice(0, 5)}
                 </span>
               </div>
-              <button
-                type="button"
-                className="list-item__delete-button"
+              <DeleteButton
                 onClick={() => setCourseToDelete(course)}
-                aria-label="Delete course"
-              >
-                <X className="list-item__delete-icon" />
-              </button>
+                ariaLabel="Delete course"
+              />
             </div>
           </li>
         ))}
