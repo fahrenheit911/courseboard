@@ -1,16 +1,10 @@
-import { type ReactElement } from 'react'
-import { Routes, Route, useLocation, useNavigate, Navigate } from 'react-router-dom'
-import CoursesPage from './pages/CoursesPage'
-import StudentsPage from './pages/StudentsPage'
-import './App.css'
+import { type ReactElement } from 'react';
+import { Routes, Route, NavLink, Navigate } from 'react-router-dom';
+import CoursesPage from './pages/CoursesPage';
+import StudentsPage from './pages/StudentsPage';
+import './App.css';
 
 function App(): ReactElement {
-  const navigate = useNavigate()
-  const { pathname } = useLocation()
-
-  const isCourses = pathname === '/courses'
-  const isStudents = pathname === '/students'
-
   return (
     <div className="app">
       <header className="app-header">
@@ -18,22 +12,24 @@ function App(): ReactElement {
       </header>
       <main className="app-main">
         <div className="card-grid">
-          <button
-            type="button"
-            className={`nav-card ${isCourses ? 'nav-card--active' : ''}`}
-            onClick={() => navigate('/courses')}
+          <NavLink
+            to="/courses"
+            className={({ isActive }) =>
+              `nav-card ${isActive ? 'nav-card--active' : ''}`
+            }
           >
             <div className="nav-card__title">Courses</div>
             <div className="nav-card__subtitle">Manage courses</div>
-          </button>
-          <button
-            type="button"
-            className={`nav-card ${isStudents ? 'nav-card--active' : ''}`}
-            onClick={() => navigate('/students')}
+          </NavLink>
+          <NavLink
+            to="/students"
+            className={({ isActive }) =>
+              `nav-card ${isActive ? 'nav-card--active' : ''}`
+            }
           >
             <div className="nav-card__title">Students</div>
             <div className="nav-card__subtitle">Student list</div>
-          </button>
+          </NavLink>
         </div>
 
         <div className="tab-content">
@@ -45,7 +41,7 @@ function App(): ReactElement {
         </div>
       </main>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
