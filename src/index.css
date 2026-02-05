@@ -1,4 +1,35 @@
 :root {
+  /* Colors */
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-card: #1e293b;
+  --bg-modal: #020617;
+  --bg-input: #0f172a;
+
+  --border-regular: #334155;
+  --border-hover: #475569;
+  --border-active: #3b82f6;
+
+  --text-primary: #f1f5f9;
+  --text-secondary: #e2e8f0;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+
+  --color-accent: #3b82f6;
+  --color-danger: #ef4444;
+  --color-danger-hover: #dc2626;
+
+  /* Transitions */
+  --transition-speed: 0.15s;
+  --transition-ease: ease;
+  --transition-standard: all var(--transition-speed) var(--transition-ease);
+
+  /* Dimensions */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+
   font-family:
     system-ui,
     -apple-system,
