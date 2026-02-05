@@ -1,97 +1,92 @@
-# CourseBoard
+# CourseBoard 🚀
 
-Web application for managing courses and students, built with React, TypeScript, and Vite.
+CourseBoard is a modern, high-performance web application designed for educational institutions to manage courses and student enrollments efficiently. Built with a focus on speed, type safety, and a premium user experience.
 
-## Technologies
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript)
+![Supabase](https://img.shields.io/badge/Supabase-Backend-3ECF8E?logo=supabase)
 
-- **React 19** — UI library
-- **TypeScript** — type safety
-- **Vite** — build tool and dev server
-- **React Router DOM** — routing
-- **Supabase** — backend (database and API)
+## ✨ Key Features
 
-## Installation
+- 📚 **Course Management**: Full CRUD operations for courses, including unique titles, descriptions, and scheduling.
+- 🎓 **Student Directory**: centralized database of students with age tracking and personal details.
+- 🔗 **Smart Enrollment**: Intuitive system to link students with courses, ensuring organized lecture groups.
+- ⚡ **Conflict Detection**: Built-in logic to prevent student scheduling overlaps, automatically checking course durations and start times.
+- 🎨 **Premium UI/UX**:
+  - Deep dark theme with glassmorphism elements.
+  - Fully responsive grid-based layouts.
+  - Custom-built Time Picker for precise scheduling.
+  - BEM-based CSS architecture for maintainable and scalable styling.
 
-```bash
-npm install
-```
+## 🛠 Tech Stack
 
-## Environment variables
+- **Frontend**: [React 19](https://react.dev/) — Latest features and optimization.
+- **Language**: [TypeScript](https://www.typescriptlang.org/) — End-to-end type safety.
+- **Build Tool**: [Vite](https://vitejs.dev/) — Hot Module Replacement (HMR) and ultra-fast builds.
+- **Backend & Database**: [Supabase](https://supabase.com/) — PostgreSQL with Real-time capabilities and Row Level Security (RLS).
+- **Icons**: [Lucide React](https://lucide.dev/) — Sharp, minimalist icon set.
+- **Styling**: Vanilla CSS with **BEM (Block Element Modifier)** methodology for modular design.
 
-Create `.env` file in the project root based on `.env.example`:
+## 🚀 Getting Started
 
-```bash
-cp .env.example .env
-```
+### Prerequisites
 
-## Development
+- Node.js (v18 or higher)
+- npm or yarn
+- A Supabase project
 
-Start the dev server:
+### Installation
 
-```bash
-npm run dev
-```
+1. **Clone the repository**:
 
-The application will be available at `http://localhost:5173`
+   ```bash
+   git clone https://github.com/your-username/courseboard.git
+   cd courseboard
+   ```
 
-## Build
+2. **Install dependencies**:
 
-Build for production:
+   ```bash
+   npm install
+   ```
 
-```bash
-npm run build
-```
+3. **Configure Environment**:
+   Create a `.env` file in the project root based on `.env.example`:
 
-Preview production build:
+   ```bash
+   cp .env.example .env
+   ```
 
-```bash
-npm run preview
-```
+4. **Run Development Server**:
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-## Project Structure
+## 📁 Project Structure
 
-```
+```text
 src/
-├── App.tsx              # Main component with navigation
-├── pages/
-│   ├── CoursesPage.tsx  # Courses management page
-│   └── StudentsPage.tsx # Students list page
-└── main.tsx             # Entry point
+├── components/     # Atomic and composite UI components
+├── hooks/          # Custom React hooks
+├── lib/            # External service configurations (Supabase)
+├── pages/          # Full-page components and routing logic
+├── styles/         # Global styles and BEM modules
+├── types/          # TypeScript interfaces and types
+└── utils/          # Helper functions and formatters
 ```
 
-## Features
+## 📊 Database Schema
 
-- **Courses** (`/courses`) — manage courses
-- **Students** (`/students`) — student list
+The platform is powered by a relational PostgreSQL schema with the following core tables:
 
-## Database Schema
+- **`students`**: Stores student profiles (`first_name`, `last_name`, `age`).
+- **`courses`**: Manages academic offerings (`title`, `start_time`, `duration_minutes`, `description`).
+- **`course_students`**: Junction table for many-to-many relationships, enforcing enrollment constraints.
 
-The database consists of three tables:
+## 🛡 Security
 
-### `students`
-- `id` (uuid, primary key) — unique identifier
-- `first_name` (text) — student's first name
-- `last_name` (text) — student's last name
-- `age` (integer) — age (must be greater than 0)
-- `created_at` (timestamp) — creation date
+Data integrity and privacy are prioritized using Supabase **Row Level Security (RLS)**, ensuring that data access is restricted and validated at the database level.
 
-### `courses`
-- `id` (uuid, primary key) — unique identifier
-- `title` (text, unique) — course title
-- `start_time` (time) — start time
-- `description` (text) — course description
-- `duration_minutes` (integer) — duration in minutes (default: 45)
-- `created_at` (timestamp) — creation date
-
-### `course_students`
-- `id` (uuid, primary key) — unique identifier
-- `course_id` (uuid) — reference to course (cascade delete)
-- `student_id` (uuid) — reference to student (cascade delete)
-- `created_at` (timestamp) — creation date
-- Unique constraint on `(course_id, student_id)` pair
-
-All tables use Row Level Security (RLS) for access control.
-
-## Version
-
-0.0.0
+---
