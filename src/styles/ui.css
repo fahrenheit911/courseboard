@@ -1,0 +1,174 @@
+/* Base Buttons */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--transition-standard);
+  gap: 0.5rem;
+}
+
+.button--primary {
+  background: var(--color-accent);
+  color: white;
+}
+
+.button--primary:hover {
+  background: #2563eb;
+}
+
+.button--ghost {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border-regular);
+  padding: 0.3rem 0.6rem;
+  font-size: 0.75rem;
+}
+
+.button--ghost:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+}
+
+.button--xs {
+  padding: 0.15rem 0.4rem;
+  font-size: 0.7rem;
+}
+
+/* Header Actions */
+.header-actions {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.header-actions .button {
+  width: 100%;
+}
+
+/* Delete Button Specifics */
+.list-item__delete-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.85rem;
+  height: 1.85rem;
+  padding: 0;
+  border-radius: var(--radius-md);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: background var(--transition-speed) var(--transition-ease);
+}
+
+.list-item__delete-icon {
+  width: 1rem;
+  height: 1rem;
+  color: var(--border-hover);
+  transition: color var(--transition-speed) var(--transition-ease);
+}
+
+.list-item__delete-button:hover {
+  background: rgba(220, 38, 38, 0.1);
+}
+
+.list-item__delete-button:hover .list-item__delete-icon {
+  color: var(--color-danger);
+}
+
+/* Tags and Meta */
+.student-count {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  background: var(--bg-primary);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-regular);
+}
+
+.course-info {
+  margin-bottom: 1.25rem;
+  padding: 0.25rem 0.25rem 0.5rem;
+}
+
+.course-info__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.course-info__description {
+  margin: 0 !important;
+  font-size: 0.92rem;
+  color: var(--text-secondary) !important;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.course-info__meta {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.course-info__tag {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  background: rgba(51, 65, 85, 0.4);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-sm);
+}
+
+/* Scrollbars and Containers */
+.tab-content {
+  margin-top: 0.75rem;
+  flex: 1;
+  min-height: 200px;
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 0.4rem;
+}
+
+.tab-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tab-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tab-content::-webkit-scrollbar-thumb {
+  background: var(--border-hover);
+  border-radius: 999px;
+}
+
+.tab-content::-webkit-scrollbar-thumb:hover {
+  background: var(--text-dim);
+}
+
+@media (max-width: 640px) {
+  .tab-content {
+    max-height: none;
+    overflow-y: visible;
+  }
+}
+
+@media (max-width: 480px) {
+  .student-count {
+    display: none;
+  }
+}
+
+@media (max-width: 400px) {
+  .course-info__description {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+}

@@ -1,0 +1,88 @@
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(2px);
+}
+
+.modal__content {
+  position: relative;
+  width: auto;
+  max-width: 24rem;
+  margin: 0 1rem;
+  padding: 1.25rem 1.4rem 1.1rem;
+  border-radius: var(--radius-xl);
+  background: var(--bg-modal);
+  border: 1px solid var(--border-regular);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.7);
+}
+
+.modal__title {
+  margin: 0 0 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.modal__description {
+  margin: 0 0 1.1rem;
+  font-size: 0.92rem;
+  color: #cbd5f5;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.modal__button {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.9rem;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  background: transparent;
+  transition: var(--transition-standard);
+}
+
+.modal__button--secondary {
+  border-color: var(--border-regular);
+  color: var(--text-secondary);
+}
+
+.modal__button--secondary:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-modal);
+}
+
+.modal__button--danger {
+  border-color: var(--color-danger);
+  background: #b91c1c;
+  color: #fee2e2;
+}
+
+.modal__button--danger:hover {
+  border-color: var(
+    --color-accent
+  ); /* Wait, why accent on danger hover? Changed back to safe red */
+  background: var(--color-danger-hover);
+  color: #fef2f2;
+}
+
+@media (max-width: 640px) {
+  .modal__content {
+    margin: 0 1rem;
+    padding: 1.1rem 1.25rem 1rem;
+  }
+}
