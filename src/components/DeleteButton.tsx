@@ -1,8 +1,8 @@
-import type { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 import { X } from 'lucide-react';
 
 interface DeleteButtonProps {
-  onClick: () => void;
+  onClick: (e: React.MouseEvent) => void;
   ariaLabel: string;
 }
 

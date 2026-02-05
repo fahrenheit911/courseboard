@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
-import { deleteStudent, getStudents, type StudentData } from '../lib/supabase';
+import { deleteStudent, getStudents } from '../lib/supabase';
+import { type StudentData } from '../types/database';
 import ConfirmDeleteModal from '../components/ConfirmDeleteModal';
 import CreateButton from '../components/CreateButton';
-import CreateStudentModal from '../components/CreateStudentModal';
+import StudentModal from '../components/StudentModal';
+import EditButton from '../components/EditButton';
 import DeleteButton from '../components/DeleteButton';
+import { truncate } from '../utils/format';
 
 function StudentsPage() {
   const [students, setStudents] = useState<StudentData[] | null>(null);
@@ -12,6 +15,7 @@ function StudentsPage() {
     null,
   );
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
+  const [studentToEdit, setStudentToEdit] = useState<StudentData | null>(null);
 
   async function handleDeleteStudent(id: string): Promise<void> {
     const isDeleted = await deleteStudent(id);
@@ -34,6 +38,14 @@ function StudentsPage() {
 
   function handleCreateSuccess(newStudent: StudentData) {
     setStudents((prev) => (prev ? [newStudent, ...prev] : [newStudent]));
+  }
+
+  function handleUpdateSuccess(updatedStudent: StudentData) {
+    setStudents((prev) =>
+      prev
+        ? prev.map((s) => (s.id === updatedStudent.id ? updatedStudent : s))
+        : prev,
+    );
   }
 
   useEffect(() => {
@@ -60,13 +72,22 @@ function StudentsPage() {
         {students?.map((student: StudentData) => (
           <li key={student.id} className="list-item">
             <div className="list-item__content">
-              <span className="list-item__title">
-                {student.first_name} {student.last_name}
-              </span>
-              <DeleteButton
-                onClick={() => setStudentToDelete(student)}
-                ariaLabel="Delete student"
-              />
+              <div className="list-item__text">
+                <span className="list-item__title">
+                  {student.first_name} {student.last_name}
+                </span>
+                <span className="list-item__subtitle">Age: {student.age}</span>
+              </div>
+              <div className="list-item__actions">
+                <EditButton onClick={() => setStudentToEdit(student)} />
+                <DeleteButton
+                  onClick={(e: React.MouseEvent) => {
+                    e.stopPropagation();
+                    setStudentToDelete(student);
+                  }}
+                  ariaLabel="Delete student"
+                />
+              </div>
             </div>
           </li>
         ))}
@@ -81,18 +102,27 @@ function StudentsPage() {
         title="Delete student"
         description={
           studentToDelete
-            ? `Are you sure you want to delete ${studentToDelete.first_name} ${studentToDelete.last_name}?`
+            ? `Are you sure you want to delete ${truncate(`${studentToDelete.first_name} ${studentToDelete.last_name}`, 50)}?`
             : 'Are you sure you want to delete this student?'
         }
         onConfirm={handleConfirmDeleteStudent}
         onCancel={() => setStudentToDelete(null)}
       />
 
-      <CreateStudentModal
+      <StudentModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
         onSuccess={handleCreateSuccess}
       />
+
+      {studentToEdit && (
+        <StudentModal
+          isOpen={studentToEdit !== null}
+          onClose={() => setStudentToEdit(null)}
+          onSuccess={handleUpdateSuccess}
+          student={studentToEdit}
+        />
+      )}
     </>
   );
 }
